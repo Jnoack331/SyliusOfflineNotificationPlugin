@@ -1,7 +1,7 @@
 {
-    "name": "sylius/plugin-skeleton",
+    "name": "jnoack331/sylius-offline-notification-plugin",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "Plugin to show an notification that the user trying to reach the site is offline.",
     "license": "MIT",
     "require": {
         "php": "^7.1",
@@ -30,8 +30,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "jnoack331\\SyliusOfflineNotificationPlugin\\": "src/",
+            "Tests\\jnoack331\\SyliusOfflineNotificationPlugin\\": "tests/"
         }
     },
     "autoload-dev": {

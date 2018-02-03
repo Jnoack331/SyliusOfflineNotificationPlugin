@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: jnoack331\SyliusOfflineNotificationPlugin
+        psr4_prefix: jnoack331\SyliusOfflineNotificationPlugin
