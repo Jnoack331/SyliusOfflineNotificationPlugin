@@ -19,7 +19,7 @@ const CACHE_VERSION = 1;
 let CURRENT_CACHES = {
   offline: 'offline-v' + CACHE_VERSION
 };
-const OFFLINE_URL = 'offline.html';
+const OFFLINE_URL = 'offline';
 
 function createCacheBustedRequest(url) {
   let request = new Request(url, {cache: 'reload'});
@@ -84,15 +84,25 @@ self.addEventListener('fetch', event => {
     console.log('Handling fetch event for', event.request.url);
     event.respondWith(
       fetch(event.request).catch(error => {
-        // The catch is only triggered if fetch() throws an exception, which will most likely
-        // happen due to the server being unreachable.
-        // If fetch() returns a valid HTTP response with an response code in the 4xx or 5xx
-        // range, the catch() will NOT be called. If you need custom handling for 4xx or 5xx
-        // errors, see https://github.com/GoogleChrome/samples/tree/gh-pages/service-worker/fallback-response
+
         console.log('Fetch failed; returning offline page instead.', error);
         return caches.match(OFFLINE_URL);
       })
     );
+  } else if(event.request.method === 'GET' &&
+      event.request.headers.get('accept').includes('text/css')) {
+      event.respondWith(
+          fetch(event.request).catch(error => {
+              console.log('css file got requested');
+              return caches.match(event.request.url);
+          }
+      )).then(function (response) {
+            caches.open(CURRENT_CACHES.offline).then(function (cache) {
+                cache.put(response);
+                return response;
+            })
+          }
+      );
   }
 
   // If our if() condition is false, then this fetch handler won't intercept the request.
